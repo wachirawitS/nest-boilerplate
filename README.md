@@ -35,19 +35,78 @@ HTTP request
 - Docker with Compose (recommended for local PostgreSQL)
 - an OAuth/OIDC provider that exposes a JWKS endpoint
 
-## Start locally
+## Run the application
+
+### 1. Install and configure
 
 ```bash
-npm install
+npm ci
 cp .env.example .env
+```
+
+Edit `.env` if your PostgreSQL or OAuth settings differ from the example.
+
+### 2. Start PostgreSQL and prepare the schema
+
+```bash
 docker compose up -d postgres
 npm run migration:run
 npm run seed
+```
+
+Migration history is stored in `public.migrations`. The first migration creates
+`DATABASE_SCHEMA`; later migrations create application tables inside it. The configured database
+and database user must already exist, and the user must have permission to create the schema.
+
+The seed is optional. It inserts one deterministic example task and is allowed only when
+`NODE_ENV` is `development` or `test`.
+
+### 3. Start the API
+
+Development mode with file watching:
+
+```bash
 npm run start:dev
+```
+
+Development mode without file watching:
+
+```bash
+npm run start
 ```
 
 The API listens on `http://localhost:3000` by default. Swagger UI is available only in the
 `development` environment at `http://localhost:3000/docs`.
+
+Verify that the application is running:
+
+```bash
+curl http://localhost:3000/api/health/live
+curl http://localhost:3000/api/health/ready
+```
+
+Both endpoints should respond with:
+
+```json
+{ "status": "ok" }
+```
+
+### Run the production build locally
+
+```bash
+npm run build
+NODE_ENV=production npm run start:prod
+```
+
+All other required environment variables are still read from `.env`. Production startup does
+not run migrations or seeds automatically; run `npm run migration:run` as a separate deployment
+step first.
+
+### Stop local PostgreSQL
+
+```bash
+docker compose stop postgres
+```
 
 The example values in `.env.example` are placeholders. Protected task routes need a real access
 token whose issuer, audience, signing algorithm, `client_id`, and scopes match the configured
@@ -61,10 +120,12 @@ DATABASE_PORT=5432
 DATABASE_USERNAME=app
 DATABASE_PASSWORD=app
 DATABASE_NAME=nest_boilerplate
-DATABASE_SCHEMA=public
+DATABASE_SCHEMA=app
 ```
 
-`DATABASE_PASSWORD` is required in every environment and has no application fallback.
+`DATABASE_PASSWORD` is required in every environment and has no application fallback. Treat
+`DATABASE_SCHEMA` as immutable after the first migration. A non-`public` schema is recommended so
+the application owns an isolated namespace.
 
 ## Example API
 
