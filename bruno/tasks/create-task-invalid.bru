@@ -1,0 +1,28 @@
+meta {
+  name: Create task - invalid
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/v1/tasks
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{process.env.ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "title": "   ",
+    "unexpected": true
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.body.code: eq VALIDATION_FAILED
+  res.body.fieldErrors.title: isArray
+}

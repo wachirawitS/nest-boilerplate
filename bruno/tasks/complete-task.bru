@@ -1,0 +1,20 @@
+meta {
+  name: Complete task
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}/complete
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{process.env.ACCESS_TOKEN}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.isCompleted: eq true
+}

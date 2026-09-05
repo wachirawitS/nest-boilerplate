@@ -1,0 +1,26 @@
+meta {
+  name: Update task
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/tasks/{{taskId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{process.env.ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "description": "Focus on transaction boundaries"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.description: eq Focus on transaction boundaries
+}
