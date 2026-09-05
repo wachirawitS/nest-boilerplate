@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { readEnvironment } from '../../config/environment';
 import { TaskSeedRepository } from '../../modules/tasks/repositories/task-seed.repository';
 import { applicationDataSource } from '../typeorm-data-source';
@@ -12,6 +14,7 @@ async function seed(): Promise<void> {
   try {
     const taskSeedRepository = new TaskSeedRepository(applicationDataSource);
     await taskSeedRepository.upsertExample();
+    console.log('Seeded example task');
   } finally {
     await applicationDataSource.destroy();
   }
