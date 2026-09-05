@@ -34,6 +34,7 @@ describe('Authentication (e2e)', () => {
         {
           provide: authConfig.KEY,
           useValue: {
+            enabled: true,
             issuer: 'https://identity.example.com/',
             audience: 'https://api.example.com',
             jwksUri: 'https://identity.example.com/.well-known/jwks.json',

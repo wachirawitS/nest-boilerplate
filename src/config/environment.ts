@@ -17,6 +17,7 @@ const AUTH_ALGORITHMS = ['RS256', 'ES256'] as const;
 
 export type NodeEnvironment = (typeof NODE_ENV_VALUES)[number];
 export type AuthAlgorithm = (typeof AUTH_ALGORITHMS)[number];
+export type AuthEnabled = 'true' | 'false';
 
 export class EnvironmentVariables {
   @IsIn(NODE_ENV_VALUES)
@@ -72,6 +73,9 @@ export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   AUTH_CLIENT_ID!: string;
+
+  @IsIn(['true', 'false'])
+  AUTH_ENABLED!: AuthEnabled;
 
   @IsOptional()
   @IsIn(['true'])

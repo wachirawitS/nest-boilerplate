@@ -36,6 +36,10 @@ export class AuthenticationGuard implements CanActivate {
       return true;
     }
 
+    if (!this.config.enabled) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.readBearerToken(request.headers.authorization);
 
