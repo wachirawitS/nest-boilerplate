@@ -6,7 +6,12 @@ export const databaseConfig = registerAs('database', () => {
   const environment = readEnvironment();
 
   return {
-    url: environment.DATABASE_URL,
+    host: environment.DATABASE_HOST,
+    port: environment.DATABASE_PORT,
+    username: environment.DATABASE_USERNAME,
+    password: environment.DATABASE_PASSWORD,
+    name: environment.DATABASE_NAME,
+    schema: environment.DATABASE_SCHEMA,
     isManualInitialization: environment.OPENAPI_GENERATION === 'true',
   };
 });

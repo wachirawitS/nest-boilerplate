@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   IsUrl,
+  Matches,
   Max,
   Min,
   validateSync,
@@ -31,8 +32,29 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   TRUST_PROXY!: string;
 
-  @IsUrl({ require_tld: false, protocols: ['postgresql', 'postgres'] })
-  DATABASE_URL!: string;
+  @IsString()
+  @IsNotEmpty()
+  DATABASE_HOST!: string;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(65535)
+  DATABASE_PORT!: number;
+
+  @IsString()
+  @IsNotEmpty()
+  DATABASE_USERNAME!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  DATABASE_PASSWORD!: string;
+
+  @Matches(/^[a-z_][a-z0-9_]*$/)
+  DATABASE_NAME!: string;
+
+  @Matches(/^[a-z_][a-z0-9_]*$/)
+  DATABASE_SCHEMA!: string;
 
   @IsUrl({ require_tld: false })
   AUTH_ISSUER!: string;

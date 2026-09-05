@@ -9,7 +9,12 @@ export function createTypeOrmOptions(
 ): DataSourceOptions {
   return {
     type: 'postgres',
-    url: environment.DATABASE_URL,
+    host: environment.DATABASE_HOST,
+    port: environment.DATABASE_PORT,
+    username: environment.DATABASE_USERNAME,
+    password: environment.DATABASE_PASSWORD,
+    database: environment.DATABASE_NAME,
+    schema: environment.DATABASE_SCHEMA,
     entities: [join(__dirname, '../modules/*/entities/*.entity.{ts,js}')],
     migrations: [join(__dirname, '../migrations/*.{ts,js}')],
     synchronize: false,

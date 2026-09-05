@@ -53,6 +53,19 @@ The example values in `.env.example` are placeholders. Protected task routes nee
 token whose issuer, audience, signing algorithm, `client_id`, and scopes match the configured
 OAuth provider. Health routes are public.
 
+Database configuration uses separate values rather than one connection URL:
+
+```dotenv
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USERNAME=app
+DATABASE_PASSWORD=app
+DATABASE_NAME=nest_boilerplate
+DATABASE_SCHEMA=public
+```
+
+`DATABASE_PASSWORD` is required in every environment and has no application fallback.
+
 ## Example API
 
 | Method   | Path                         | Permission       | Purpose            |

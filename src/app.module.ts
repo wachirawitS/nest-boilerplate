@@ -28,7 +28,12 @@ import { TasksModule } from './modules/tasks/tasks.module';
       inject: [databaseConfig.KEY],
       useFactory: (config: ConfigType<typeof databaseConfig>) => ({
         type: 'postgres',
-        url: config.url,
+        host: config.host,
+        port: config.port,
+        username: config.username,
+        password: config.password,
+        database: config.name,
+        schema: config.schema,
         autoLoadEntities: true,
         synchronize: false,
         migrationsRun: false,
